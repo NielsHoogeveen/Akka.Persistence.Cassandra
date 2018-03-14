@@ -2,8 +2,8 @@
 
 # Fake directories
 src/.build/**
-
-
+src/.vs/
+.idea/
 
 #GitExtensions
 us.stackdump
