@@ -23,7 +23,7 @@ namespace Akka.Persistence.Cassandra.SessionManagement
             if (config == null) throw new ArgumentNullException("config");
 
             Builder = Cluster.Builder();
-            
+
             // Get IP and port configuration
             int port = config.GetInt("port", 9042);
             IPEndPoint[] contactPoints = ParseContactPoints(config.GetStringList("contact-points"), port);
@@ -41,11 +41,11 @@ namespace Akka.Persistence.Cassandra.SessionManagement
             string compressionTypeConfig = config.GetString("compression");
             if (compressionTypeConfig != null)
             {
-                var compressionType = (CompressionType) Enum.Parse(typeof (CompressionType), compressionTypeConfig, true);
+                var compressionType = (CompressionType)Enum.Parse(typeof(CompressionType), compressionTypeConfig, true);
                 Builder.WithCompression(compressionType);
             }
         }
-        
+
         private static IPEndPoint[] ParseContactPoints(IList<string> contactPoints, int port)
         {
             if (contactPoints == null || contactPoints.Count == 0)

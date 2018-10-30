@@ -64,7 +64,7 @@ namespace Akka.Persistence.Cassandra.Snapshot
             _selectSnapshot = _session.PrepareFormat(SnapshotStoreStatements.SelectSnapshot, fullyQualifiedTableName);
             _selectSnapshotMetadata = _session.PrepareFormat(SnapshotStoreStatements.SelectSnapshotMetadata, fullyQualifiedTableName);
         }
-
+/*
         protected override bool Receive(object message)
         {
             // Make deletes async as well, but make sure we still publish like the base class does
@@ -83,7 +83,7 @@ namespace Akka.Persistence.Cassandra.Snapshot
 
             return true;
         }
-
+*/
         protected override async Task<SelectedSnapshot> LoadAsync(string persistenceId, SnapshotSelectionCriteria criteria)
         {
             bool hasNextPage = true;
@@ -185,12 +185,12 @@ namespace Akka.Persistence.Cassandra.Snapshot
             batch.SetConsistencyLevel(_cassandraExtension.SnapshotStoreSettings.WriteConsistency);
             await _session.ExecuteAsync(batch).ConfigureAwait(false);
         }
-
+/*
         protected override void Saved(SnapshotMetadata metadata)
         {
             // No op
         }
-
+*/
         protected override void PostStop()
         {
             base.PostStop();

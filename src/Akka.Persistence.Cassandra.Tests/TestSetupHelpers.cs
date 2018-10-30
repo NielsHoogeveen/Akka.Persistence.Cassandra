@@ -1,6 +1,6 @@
 ﻿using Akka.Actor;
 using Cassandra;
-
+/*
 namespace Akka.Persistence.Cassandra.Tests
 {
     /// <summary>
@@ -31,3 +31,4 @@ namespace Akka.Persistence.Cassandra.Tests
         }
     }
 }
+*/

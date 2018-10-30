@@ -14,7 +14,7 @@ namespace Akka.Persistence.Cassandra.SessionManagement
     {
         private readonly Config _sessionConfigs;
         private readonly ConcurrentDictionary<string, Lazy<ISession>> _sessionCache;
-        
+
         public DefaultSessionManager(ExtendedActorSystem system)
         {
             if (system == null) throw new ArgumentNullException("system");
@@ -30,7 +30,13 @@ namespace Akka.Persistence.Cassandra.SessionManagement
         /// </summary>
         public ISession ResolveSession(string key)
         {
-            return _sessionCache.GetOrAdd(key, k => new Lazy<ISession>(() => CreateSession(k))).Value;
+            try
+            {
+                return _sessionCache.GetOrAdd(key, k => new Lazy<ISession>(() => CreateSession(k))).Value;
+            }
+            catch (Exception)
+            { }
+            return null;
         }
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace Akka.Persistence.Cassandra.SessionManagement
             // No-op since we want session instance to live for actor system's duration 
             // (TODO: Dispose of session instance if hooks are added to listen for Actor system shutdown?)
         }
-        
+
         private ISession CreateSession(string clusterName)
         {
             if (_sessionConfigs.HasPath(clusterName) == false)
@@ -49,7 +55,7 @@ namespace Akka.Persistence.Cassandra.SessionManagement
 
             // Get a cluster builder from the settings, build the cluster, and connect for a session
             var clusterSettings = new SessionSettings(_sessionConfigs.GetConfig(clusterName));
-            return clusterSettings.Builder.Build().Connect();
+            return clusterSettings.Builder.Build().Connect(); ;
         }
     }
 }
